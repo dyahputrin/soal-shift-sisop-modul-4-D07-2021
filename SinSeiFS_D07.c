@@ -13,7 +13,10 @@ static  const  char *dirpath = "/home/putri/Downloads";
 void encryptAtoz(char *path) {
     if(!strcmp(path, ".") || !strcmp(path, "..")) return;
 
-    int end = strlen(path);
+    //char temp[100];
+    char *token = strtok(path, ".");
+
+    int end = strlen(token);
 
     for (int i = 0; i < end; i++) {
         
@@ -41,13 +44,16 @@ void encryptAtoz(char *path) {
             i++;
         }
 
-    }
+    }  
+
 }
+
 
 void recursiveRename(char *fromPath) {
     DIR *dp;
     struct dirent *de;
     char file[100];
+    char fileExt[100];
     char beforePath[1100];
     char afterPath[1100];
 
@@ -64,10 +70,25 @@ void recursiveRename(char *fromPath) {
         }
         //printf("de rename: %s\n", de->d_name);
         strcpy(file, de->d_name);
+        strcpy(fileExt, file);
         sprintf(beforePath, "%s/%s", fromPath, file);
+        //printf("ini file : %s\n", file);
+        char *ext = strrchr(fileExt, '.');
+
         encryptAtoz(file);
-        sprintf(afterPath, "%s/%s", fromPath, file);
-        rename(beforePath, afterPath);
+        //printf("ini ext: %s\n", ext);
+
+        if(ext != NULL) {
+            sprintf(afterPath, "%s/%s%s", fromPath, file, ext);
+            //printf("ini afterpath: %s\n", afterPath);
+            rename(beforePath, afterPath);
+        }
+
+        else if(ext == NULL) {
+            sprintf(afterPath, "%s/%s", fromPath, file);
+            //printf("ini afterpath: %s\n", afterPath);
+            rename(beforePath, afterPath);
+        }
 
     }
 
@@ -119,6 +140,7 @@ static int xmp_rename(const char *from, const char *to)
     // normal jadi atoz encode
     if(!strstr(fromPath, "AtoZ_")) {
         if(strstr(toPath, "AtoZ_")) recursiveRename(fromPath);
+        printf("%s-->%s\n", fromPath, toPath);
     }
 
     //recursiveRename(fromPath);
