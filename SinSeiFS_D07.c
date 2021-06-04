@@ -96,6 +96,19 @@ void recursiveRename(char *fromPath) {
 
 }
 
+void logFileAtozRename(char *path1, char *path2) {
+    FILE *f;
+    f = fopen("atoz.log", "a+");
+    fprintf(f, "%s-->%s\n", path1, path2);
+}
+
+void logFileAtozMkdir(char *path) {
+    FILE *f;
+    f = fopen("atoz.log", "a+");
+    //format nge-log yang mkdir tidak ditentukan
+    fprintf(f, "mkdir: %s\n", path);
+}
+
 static  int  xmp_getattr(const char *path, struct stat *stbuf)
 {
     int res;
@@ -116,6 +129,10 @@ static int xmp_mkdir(const char *path, mode_t mode)
     char fpath[1000];
 
     sprintf(fpath,"%s%s",dirpath,path);
+
+    if(strstr(fpath, "AtoZ_")) {
+        logFileAtozMkdir(fpath);
+    }
 
     res = mkdir(fpath, mode);
     if (res == -1)
@@ -140,7 +157,8 @@ static int xmp_rename(const char *from, const char *to)
     // normal jadi atoz encode
     if(!strstr(fromPath, "AtoZ_")) {
         if(strstr(toPath, "AtoZ_")) recursiveRename(fromPath);
-        printf("%s-->%s\n", fromPath, toPath);
+        //printf("%s-->%s\n", fromPath, toPath);
+        logFileAtozRename(fromPath, toPath);
     }
 
     //recursiveRename(fromPath);
