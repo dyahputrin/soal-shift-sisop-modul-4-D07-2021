@@ -160,6 +160,61 @@ void recursiveRename(char *fromPath) {
     closedir(dp);
 
 }
+/*
+void recursiveRename(char *fromPath, int type) {
+    DIR *dp;
+    struct dirent *de;
+    char file[100];
+    char fileExt[100];
+    char beforePath[1100];
+    char afterPath[1100];
+
+    dp = opendir(fromPath);
+
+    if (dp == NULL) return;
+
+    while ((de = readdir(dp)) != NULL) {
+        if(strcmp(de->d_name, "..") == 0|| strcmp(de->d_name, ".") == 0) continue;
+        if(de->d_type == DT_DIR) {
+            strcpy(file, de->d_name);
+            sprintf(beforePath, "%s/%s", fromPath, file);
+            recursiveRename(beforePath, type);
+        }
+        //printf("de rename: %s\n", de->d_name);
+        strcpy(file, de->d_name);
+        strcpy(fileExt, file);
+        sprintf(beforePath, "%s/%s", fromPath, file);
+        //printf("ini file : %s\n", file);
+        char *ext = strrchr(fileExt, '.');
+	puts(file);
+	
+	if(type == 1)
+		encryptAtoz(file);
+	else if ( type == 2)
+		encryptrot13(file);
+	else if ( type == 3)
+		vignereCipher(file);
+
+        //printf("ini ext: %s\n", ext);
+
+        if(ext != NULL) {
+            sprintf(afterPath, "%s/%s%s", fromPath, file, ext);
+            //printf("ini afterpath: %s\n", afterPath);
+            rename(beforePath, afterPath);
+        }
+
+        else if(ext == NULL) {
+            sprintf(afterPath, "%s/%s", fromPath, file);
+            //printf("ini afterpath: %s\n", afterPath);
+            rename(beforePath, afterPath);
+        }
+
+    }
+
+    closedir(dp);
+
+}
+*/
 
 void logFileAtozMkdir(char *path) {
     FILE *f;
