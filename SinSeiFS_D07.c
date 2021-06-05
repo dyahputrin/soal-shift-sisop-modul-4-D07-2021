@@ -243,6 +243,23 @@ void logFileAtozMkdir(char *path) {
     fprintf(f, "mkdir: %s\n", path);
 }
 
+//nomor 4
+void logInfo(char *desc) {
+    time_t waktu = time(NULL);
+    struct wt wt = *localtime(&waktu);
+    FILE* fLog = fopen(logpath, "a");
+    fprintf(fLog, "INFO::%02d%02d20%02d-%02d:%02d:%02d::%s\n", wt.wt_mday, wt.wt_mon, (wt.wt_year + 1900) % 100, wt.wt_hour, wt.wt_min, wt.wt_sec, desc);
+    fclose(fLog);
+}
+
+void logWarning(char *desc) {
+    time_t waktu = time(NULL);
+    struct wt wt = *localtime(&waktu);
+    FILE* fLog = fopen(logpath, "a");
+    fprintf(fLog, "WARNING::%02d%02d20%02d-%02d:%02d:%02d::%s\n", wt.wt_mday, wt.wt_mon, (wt.wt_year + 1900) % 100, wt.wt_hour, wt.wt_min, wt.wt_sec, desc);
+    fclose(fLog);
+}
+
 static  int  xmp_getattr(const char *path, struct stat *stbuf)
 {
     int res;
@@ -277,6 +294,11 @@ static int xmp_mkdir(const char *path, mode_t mode)
     res = mkdir(fpath, mode);
     if (res == -1)
         return -errno;
+
+    char desc[1500];
+    sprintf(desc, "MKDIR::%s", fpath);
+    logInfo(desc);
+
 
     return 0;
 }
@@ -328,6 +350,10 @@ static int xmp_rename(const char *from, const char *to)
     res = rename(fromPath, toPath);
     if (res == -1)
         return -errno;
+
+    char desc[2500];
+    sprintf(desc, "RENAME::%s::%s", fromPath, toPath);
+    logInfo(desc);
 
 
     return 0;
