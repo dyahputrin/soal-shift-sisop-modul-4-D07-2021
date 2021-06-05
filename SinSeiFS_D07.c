@@ -367,3 +367,138 @@ int  main(int  argc, char *argv[])
 
     return fuse_main(argc, argv, &xmp_oper, NULL);
 }
+
+// Soal no 3
+// void encryptAisa(char *string) {
+//     if(!strcmp(string, ".") || !strcmp(string, "..")) return;
+//     char *stringto = strtok(string, ".");
+//     for (int i = 0; i < strlen(stringto); i++) 
+//     {
+//         while(string[i]!='\0') {
+//             if(!((string[i]>=0&&string[i]<65)||(string[i]>90&&string[i]<97)||(string[i]>122&&string[i]<=127))) 
+//             {
+//                 if(string[i]>='A'&&string[i]<='Z') 
+//                 {
+//                     string[i] = 'Z'+'A'-string[i] + 32;
+//                     //string[i] = string[i] + 32;
+//                 }
+               
+//                if(string[i]>='a'&&string[i]<='z') 
+//                {
+//                     string[i]  = 'z'+'a'-string[i] + 32;
+//                     //string[i] = string[i] + 32;
+//                 }
+//             } 
+//             if(((string[i]>=0&&string[i]<65)||(string[i]>90&&string[i]<97)||(string[i]>122&&string[i]<=127))) {
+//                 string[i]  = string[i] + 32; 
+//             }
+//             i++;
+//         }
+
+//     }  
+
+// }
+// void recursiveRenameAisA(char *fromPath) {
+//     DIR *dp;
+//     struct dirent *de;
+//     char file[100];
+//     char fileExt[100];
+//     char beforePath[1100];
+//     char afterPath[1100];
+
+//     dp = opendir(fromPath);
+
+//     if (dp == NULL) return;
+//     //int num;
+
+//     while ((de = readdir(dp)) != NULL) {
+//         if(strcmp(de->d_name, "..") == 0|| strcmp(de->d_name, ".") == 0) continue;
+//         if(de->d_type == DT_DIR) {
+//             strcpy(file, de->d_name);
+//             sprintf(beforePath, "%s/%s", fromPath, file);
+//             recursiveRename(beforePath);
+//         }
+//         //printf("de rename: %s\n", de->d_name);
+//         strcpy(file, de->d_name);
+//         strcpy(fileExt, file);
+//         sprintf(beforePath, "%s/%s", fromPath, file);
+//         //printf("ini file : %s\n", file);
+//         char *ext = strrchr(fileExt, '.');
+
+//         encryptAisa(file);
+//         //printf("ini ext: %s\n", ext);
+
+//         if(ext != NULL) {
+//             sprintf(afterPath, "%s/%s%s", fromPath, file, ext);
+//             //printf("ini afterpath: %s\n", afterPath);
+//             rename(beforePath, afterPath);
+//             // for(int i=0;i<str(afterPath);i++)
+//             // {
+//             //     if(beforePath == afterPath)
+//             //     {
+//             //         num=1;
+//             //     }   
+//             //     else
+//             //     {
+//             //         num=0;
+//             //     }
+//             //     sprintf("%d",num);
+//             // }
+//         }
+
+//         else if(ext == NULL) {
+//             sprintf(afterPath, "%s/%s", fromPath, file);
+//             //printf("ini afterpath: %s\n", afterPath);
+//             rename(beforePath, afterPath);
+//             // for(int i=0;i<str(afterPath);i++)
+//             // {
+//             //     if(beforePath == afterPath)
+//             //     {
+//             //         num=1;
+//             //     }  
+//             //     else
+//             //     {
+//             //         num=0;
+//             //     }
+//             //     sprintf("%d",num);
+//             // }
+//         }
+
+//     }
+
+//     closedir(dp);
+
+// }
+// static int xmp_rename(const char *from, const char *to)
+// {
+//     int res;
+//     char fromPath[1000];
+//     char toPath[1000];
+
+//     sprintf(fromPath,"%s%s",dirpath,from);
+//     sprintf(toPath,"%s%s",dirpath,to);
+    
+//     // atoz jadi normal decode
+//     if(strstr(fromPath, "AtoZ_")) {
+//         if(!strstr(toPath, "AtoZ_")) recursiveRename(fromPath);
+//     }
+//     // normal jadi atoz encode
+//     if(!strstr(fromPath, "AtoZ_")) {
+//         if(strstr(toPath, "AtoZ_")) recursiveRename(fromPath);
+//         //printf("%s-->%s\n", fromPath, toPath);
+//         logFileAtozRename(fromPath, toPath);
+//     }
+
+//     if(strstr(fromPath, "A_is_a_")) {
+//         if(!strstr(toPath, "A_is_a_")) recursiveRenameAisA(fromPath);
+//     }
+
+//     //recursiveRename(fromPath);
+    
+//     res = rename(fromPath, toPath);
+//     if (res == -1)
+//         return -errno;
+
+
+//     return 0;
+// }
