@@ -10,6 +10,62 @@
 
 static  const  char *dirpath = "/home/putri/Downloads";
 
+// nmr 2 b		
+void vigenereCipher(char* plainText){
+	char *k = "SISOP";
+	int i;
+	char cipher;
+	int cipherValue;
+	int len = strlen(k);
+	
+	//Loop through the length of the plain text string
+	for(i=0; i<strlen(plainText); i++){
+		
+		//if the character is lowercase, where range is [97 -122]
+		if(islower(plainText[i]))
+		{
+			cipherValue = ( (int)plainText[i]-97 + (int)tolower(k[i % len])-97 ) % 26 +97;
+			cipher = (char)cipherValue;
+		}
+		else // Else it's upper case, where letter range is [65 - 90]
+		{
+			cipherValue = ( (int)plainText[i]-65 + (int)toupper(k[i % len])-65 ) % 26 +65;
+			cipher = (char)cipherValue;
+		}
+	}
+	
+	
+}
+
+//no 2a
+void encryptrot13(char *string) {
+	printf("encrypt");
+	if(!strcmp(string, ".") || !strcmp(string, "..")) return;
+	
+	char *token = strtok(string, ".");
+
+	int end = strlen(token);
+
+        for(int i = 0; i < end; i++) {
+                if(string[i] >= 65 && string[i] <= 90) {
+                        string[i] = string[i] + 13;
+                        if(string[i] > 90) {
+                                string[i] = string[i] - 90 + 65 - 1;
+                        }
+                } else if(string[i] >= 97 && string[i] <= 122) {
+                        int j = (int)string[i];
+                        j = j + 13;
+                        if(j > 122) {
+                                j = j - 122 + 97 - 1;
+                        }
+                        string[i] = j;
+                } else {
+                        string[i] = string[i];
+                }
+	
+        }
+}
+
 void encryptAtoz(char *path) {
     if(!strcmp(path, ".") || !strcmp(path, "..")) return;
 
@@ -77,6 +133,15 @@ void recursiveRename(char *fromPath) {
 
         encryptAtoz(file);
         //printf("ini ext: %s\n", ext);
+        /*
+        if(type == 1)
+            encryptAtoz(file);
+        else if ( type == 2)
+            encryptrot13(file);
+        else if ( type == 3)
+            vignereCipher(file);
+         */
+        
 
         if(ext != NULL) {
             sprintf(afterPath, "%s/%s%s", fromPath, file, ext);
@@ -94,6 +159,20 @@ void recursiveRename(char *fromPath) {
 
     closedir(dp);
 
+}
+
+void logFileAtozMkdir(char *path) {
+    FILE *f;
+    f = fopen("atoz.log", "a+");
+    //format nge-log yang mkdir tidak ditentukan
+    fprintf(f, "mkdir: %s\n", path);
+}
+
+void logFileRXMkdir(char *path) {
+    FILE *f;
+    f = fopen("RX.log", "a+");
+    //format nge-log yang mkdir tidak ditentukan
+    fprintf(f, "mkdir: %s\n", path);
 }
 
 void logFileAtozRename(char *path1, char *path2) {
@@ -133,7 +212,13 @@ static int xmp_mkdir(const char *path, mode_t mode)
     if(strstr(fpath, "AtoZ_")) {
         logFileAtozMkdir(fpath);
     }
-
+    // log 2c
+    /*
+	else if(strstr(fpath, "RX_")) {
+        logFileRXMkdir(fpath);
+    }
+    */
+    
     res = mkdir(fpath, mode);
     if (res == -1)
         return -errno;
@@ -160,6 +245,28 @@ static int xmp_rename(const char *from, const char *to)
         //printf("%s-->%s\n", fromPath, toPath);
         logFileAtozRename(fromPath, toPath);
     }
+    
+    /*
+    //if nya kutambahin 1 atoz 2 rx 
+    
+    // atoz jadi normal decode
+    
+    if(strstr(fromPath, "AtoZ_")) {
+        if(!strstr(toPath, "AtoZ_")) recursiveRename(fromPath,1);
+    }else if(strstr(fromPath, "RX_")) {
+        if(!strstr(toPath, "RX_")) recursiveRename(fromPath,2);
+	}
+    // normal jadi atoz encode
+    if(!strstr(fromPath, "AtoZ_")) {
+        if(strstr(toPath, "AtoZ_")) recursiveRename(fromPath,1);
+        //printf("%s-->%s\n", fromPath, toPath);
+        logFileAtozRename(fromPath, toPath);
+    } else if(!strstr(fromPath, "RX_")) {
+        if(strstr(toPath, "RX_")) recursiveRename(fromPath,2);
+        //printf("%s-->%s\n", fromPath, toPath);
+        logFileRXRename(fromPath, toPath);
+    }
+    */
 
     //recursiveRename(fromPath);
     
