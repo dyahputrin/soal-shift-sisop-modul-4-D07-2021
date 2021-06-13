@@ -218,7 +218,7 @@ Pada saat melakukan renaming file, terdapat sedikit kendala pada recursive direc
 
 ### Soal 2
 Pada soal nomor 2 ini kita diminta membuat tambahan enkripsi dan dekripsi dari soal nomor 1 membuat log dan melakukan split size.
-### A
+### A. ROT13
 pada soal A ini kita diminta membuat enkripsi nama file yang berawalan ```RX_``` yang mana apa bila sebuah file memiliki awalana tersebut maka isi file akan dienkripsi dengan metode Atbash chiper dengan tambahan rot13 .
 ```
 void encryptrot13(char *string, int type) {
@@ -255,7 +255,7 @@ void encryptrot13(char *string, int type) {
 
 yang pertama dilakukan dalam fungsi diatas adalah dengan mengecek ekstensi menggunakan ```strtok``` unutk memisahakan agar nama ekstensi dari file tidak terenkripsi, lalu masuk ke dalam koding enkripsi yang dilakukan dalam perulangan ```for```.fungsi diatas dipanggil oleh fungsi recursiverename yang digunakan untuk mengenkripsi seluruh isi dari folder.
 
-### B
+### B. Vigenere cipher
 pada soal nomor 2 b kita diminta untuk mengenkripsi sebuah file yang di rename dengan awalan ```RX_``` mejadi file dengan enkripsi atbash cipher ditambah dengan vigenere cipher dengan key "SISOP" dan case Sensitive.
 ```
 void vigenereCipher(char* plainText){
@@ -286,10 +286,10 @@ void vigenereCipher(char* plainText){
 ```
 fungsi diatas dipanggil oleh fungsi recursiverename yang digunakan untuk mengenkripsi seluruh isi dari folder.
 
-### C
+### C. Dekripsi file
 pada soal c ini kita diminta untuk mengdekripsi file yang telah di enkrisi pada file yang memiliki nama awalan ```RX_``` dekripsi dilakukan ketika sebuah file direname dengan nama file baru tanpa awalan ```RX_``` yang mana koding dekripsi terdapat pada fungsi recursivename yang ada pada nomor 1.
 
-### D
+### D. Log
 pada soal D kita diminta untuk membuat log file dari pembuatan directory baru ```mkdir``` atau ketika rename folder yang berada pada mount folder.
 ```
 void logFileRXRename(char *path1, char *path2) {
@@ -337,6 +337,20 @@ static int xmp_mkdir(const char *path, mode_t mode)
 pada Soal A pengenkripsian ketika mkdir tidak terbaca. mungkin terjadi kesalahan pada fuse.
 pada Soal B koding vigenere chiper tidak berkerja dengan baik.
 pada Soal D pembuatan log mkdir tidak terbaca. kemungkinan terjadi kesalahan pada fuse.
+
+## Dokumentasi
+![Cuplikan layar 2021-06-13 210741](https://user-images.githubusercontent.com/73246861/121810758-43358200-cc8c-11eb-8e5c-8c6e3e142b43.png)
+![Cuplikan layar 2021-06-13 210808](https://user-images.githubusercontent.com/73246861/121810764-4892cc80-cc8c-11eb-9195-08c66302b065.png)
+![Cuplikan layar 2021-06-13 210849](https://user-images.githubusercontent.com/73246861/121810769-4c265380-cc8c-11eb-8f94-d05aa929399f.png)
+rename
+![Cuplikan layar 2021-06-13 210901](https://user-images.githubusercontent.com/73246861/121810782-547e8e80-cc8c-11eb-99e1-0e83a59c8808.png)
+![Cuplikan layar 2021-06-13 210924](https://user-images.githubusercontent.com/73246861/121810789-58aaac00-cc8c-11eb-885f-e112c2becd0d.png)
+rename folder tanpa rx
+![Cuplikan layar 2021-06-13 211119](https://user-images.githubusercontent.com/73246861/121810804-67915e80-cc8c-11eb-8a92-549056fe351a.png)
+![Cuplikan layar 2021-06-13 211303](https://user-images.githubusercontent.com/73246861/121810807-695b2200-cc8c-11eb-87a1-cc8fc036a848.png)
+Log RX_
+
+
 
 
 ### Soal 3
