@@ -343,9 +343,11 @@ pada Soal D pembuatan log mkdir tidak terbaca. kemungkinan terjadi kesalahan pad
 ![Cuplikan layar 2021-06-13 210808](https://user-images.githubusercontent.com/73246861/121810764-4892cc80-cc8c-11eb-9195-08c66302b065.png)
 ![Cuplikan layar 2021-06-13 210849](https://user-images.githubusercontent.com/73246861/121810769-4c265380-cc8c-11eb-8f94-d05aa929399f.png)
 rename
+
 ![Cuplikan layar 2021-06-13 210901](https://user-images.githubusercontent.com/73246861/121810782-547e8e80-cc8c-11eb-99e1-0e83a59c8808.png)
 ![Cuplikan layar 2021-06-13 210924](https://user-images.githubusercontent.com/73246861/121810789-58aaac00-cc8c-11eb-885f-e112c2becd0d.png)
 rename folder tanpa rx
+
 ![Cuplikan layar 2021-06-13 211119](https://user-images.githubusercontent.com/73246861/121810804-67915e80-cc8c-11eb-8a92-549056fe351a.png)
 ![Cuplikan layar 2021-06-13 211303](https://user-images.githubusercontent.com/73246861/121810807-695b2200-cc8c-11eb-87a1-cc8fc036a848.png)
 Log RX_
