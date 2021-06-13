@@ -211,6 +211,9 @@ void recursiveRename(char *fromPath, int type) {
 ```
 Pada function recursiveRename, untuk melakukan recursive pada direktori-direktori di dalamnya dapat dilakukan dengan while loop selama directory != NULL. Proses tersebut berlangsung secara recursive terus menerus dengan cara memanggil function recursiveRename.
 
+![alt text](https://github.com/dyahputrin/image/blob/main/41.png) <br />
+![alt text](https://github.com/dyahputrin/image/blob/main/42.png) <br />
+
 ### Kendala
 Pada saat melakukan renaming file, terdapat sedikit kendala pada recursive directory nya.
 
@@ -444,3 +447,5 @@ void logWarning(char *desc) {
 }
 ```
 Untuk melakukan pencatatan log, kita membuat dua function yaitu ```logInfo``` dan ```logWarning```. Kedua function memiliki cara kerja yang sama dimana kita menggunakan variabel waktu dengan type time_t dan struct wt wt untuk mengambil localtime. Setelah itu, melakukan ```fprintf``` sesuai format yang telah disediakan soal.
+
+![alt text](https://github.com/dyahputrin/image/blob/main/43.png) <br />
