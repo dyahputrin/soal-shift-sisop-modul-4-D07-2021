@@ -216,6 +216,214 @@ Pada saat melakukan renaming file, terdapat sedikit kendala pada recursive direc
 
 ---------------------------------------------
 
+### Soal 3
+Pada soal nomor e, kita diminta untuk merubah semua nama file menjadi lowercase insensitive dan diberi ekstensi baru berupa nilai desimal dari biner perbedaan namanya. Contohnya jika pada direktori asli nama filenya adalah "FiLe_CoNtoH.txt" maka pada fuse akan menjadi "file_contoh.txt.1321" 1321 berasal dari biner 10100101001.
+Untuk mengerjakan soal 3, pertama-tama membuat fungsi untuk membaca perbedaan nama yang ada dan mengubahnya ke dalam bentuk biner
+```
+void encryptBinerProb(char *path, char *biner, char *low) {
+    if(!strcmp(path, ".") || !strcmp(path, "..")) return;
+    int i;
+    //char temp[100];
+    char *token = strtok(path, ".");
+    int end = strlen(token);
+
+    for (i = 0; i < end; i++) 
+    {
+        if(path[i]>='A'&&path[i]<='Z')
+        {
+            biner[i] = '1';
+            low[i] = path[i] + 32;
+        }
+        else
+        {
+            biner[i] = '0';
+            low[i] = path[i];
+        }
+    }  
+    biner[end] = '\0';
+    if(((path[i]>=0&&path[i]<65)||(path[i]>90&&path[i]<97)||(path[i]>122&&path[i]<=127))) 
+    {
+        low[i] = path[i];
+    }
+
+}
+```
+### A : Jika sebuah direktori dibuat dengan awalan “A_is_a_”, maka direktori tersebut akan menjadi sebuah direktori spesial.
+```
+static int xmp_mkdir(const char *path, mode_t mode)
+{
+    int res;
+    char fpath[1000];
+
+    sprintf(fpath,"%s%s",dirpath,path);
+
+    if(strstr(fpath, "AtoZ_")) {
+        logFileAtozMkdir(fpath);
+    }
+    // log 2c
+    /*
+	else if(strstr(fpath, "RX_")) {
+        logFileRXMkdir(fpath);
+    }
+    */
+    
+    res = mkdir(fpath, mode);
+    if (res == -1)
+        return -errno;
+
+    char desc[1500];
+    sprintf(desc, "MKDIR::%s", fpath);
+    logInfo(desc);
+
+
+    return 0;
+}
+
+```
+Pada soal 3a ini, menggunakan kodingan yang sama pada nomor 1 diatas. Apabila sebuah directory dibuat dengan awalan "A_is_a_", maka directory tersebut menjadi directory spesial, sehingga apabila menjadi direktori spesial, dan juga.
+
+### B : Jika sebuah direktori di-rename dengan memberi awalan “A_is_a_”, maka direktori tersebut akan menjadi sebuah direktori spesial.
+```
+static int xmp_rename(const char *from, const char *to)
+{
+    int res;
+    char fromPath[1000];
+    char toPath[1000];
+
+    sprintf(fromPath,"%s%s",dirpath,from);
+    sprintf(toPath,"%s%s",dirpath,to);
+
+    if(!strstr(fromPath, "A_is_a_")) 
+    {
+        if(strstr(toPath, "A_is_a_")) 
+                recursiveRename(fromPath);
+        }
+    
+    res = rename(fromPath, toPath);
+    if (res == -1)
+        return -errno;
+
+    char desc[2500];
+    sprintf(desc, "RENAME::%s::%s", fromPath, toPath);
+
+
+    return 0;
+}
+```
+Selanjutnya pada soal 3b ini, yang pertama-tama dilakukan adalah pengecekan apakah directory tersebut mengandung "A_is_a_" dengan ```strstr```. Apabila mengandung "A_is_a_" maka akan dipanggil atau dijalankan fungsi bernama ```recursiveRename()``` yang mana digunakan untuk mengubah nama file-filenya sesuai dengan kondisi yang diminta pada soal 3e.
+
+### C dan D (Belum Selesai)
+
+### E : Pada direktori spesial semua nama file (tidak termasuk ekstensi) pada fuse akan berubah menjadi lowercase insensitive dan diberi ekstensi baru berupa nilai desimal dari binner perbedaan namanya.
+
+Dalam mengerjakan soal 3e ini, yang pertama-tama yaitu mengecek berapa perbedaan nama dan mengubahnya ke dalam bentuk biner
+```
+void encryptBinerProb(char *path, char *biner, char *low) {
+    if(!strcmp(path, ".") || !strcmp(path, "..")) return;
+    int i;
+    //char temp[100];
+    char *token = strtok(path, ".");
+    int end = strlen(token);
+
+    for (i = 0; i < end; i++) 
+    {
+        if(path[i]>='A'&&path[i]<='Z')
+        {
+            biner[i] = '1';
+            low[i] = path[i] + 32;
+        }
+        else
+        {
+            biner[i] = '0';
+            low[i] = path[i];
+        }
+    }  
+    biner[end] = '\0';
+    if(((path[i]>=0&&path[i]<65)||(path[i]>90&&path[i]<97)||(path[i]>122&&path[i]<=127))) 
+    {
+        low[i] = path[i];
+    }
+
+}
+```
+pada fungsi diatas, untuk mendapatkan beda namanya, yang pertama yaitu membuat sebuah perulangan yang didalamnya terdapat ```IF statement``` yaitu ketika path atau string dari nama filenya terdapat huruf besar, maka pada variable ```biner```, dicatat = 1. Dan pada variable low ```path[i] + 32``` proses berikut berfungsi untuk mengubah nama file yang terdapat huruf besar, diubah menjadi huruf kecil dan disimpan ke dalam variable ```low[i]```. <br/>
+
+Begitu pula sebaliknya,```else``` ketika nama file atau stringnya sudah berupa huruf kecil maka, tinggal menset atau mencatat bahwa variable biner = 0. sehingga setelah fungsi diatas dijalankan, maka setiap karakter yang berbentuk huruf besar, akan diubah menjadi '1' dan yang berbentuk huruf kecil, diubah menjadi '0' yang mana tersimpan ke variable bernama ```biner```, selanjutnya diluar perulangan juga diatur juga memenuhi kondisi tersebut maka ```path=low```, kondisi menggunakan table ASCII. <br/>
+
+Selanjutnya, setelah selesai menyimpan biner perbedaan namanya, langkah selanjutnya adalah mengubah biner tersebut atau mengkonversikannya ke dalam bentuk desimal
+```
+int bstr_to_dec(char *str)
+{
+    int val = 0;
+     
+    while (*str != '\0')
+        val = 2 * val + (*str++ - '0');
+    return val;
+}
+```
+Fungsi diatas berfungsi untuk mengubah Biner yang betipe char kedalam desimal bertipe integer.
+Setelah 2 fungsi diatas dibentuk, maka selanjutnya masuk ke dalam fungsi rename, fungsi rename disini menggunakan rename pada soal no 1 dan2 yang man berbentuk rekursiv
+```
+
+void recursiveRename(char *fromPath) {
+    DIR *dp;
+    struct dirent *de;
+    char file[100];
+    char fileExt[100];
+    char beforePath[1100];
+    char afterPath[1100];
+
+    dp = opendir(fromPath);
+
+    if (dp == NULL) return;
+
+    while ((de = readdir(dp)) != NULL) {
+        if(strcmp(de->d_name, "..") == 0|| strcmp(de->d_name, ".") == 0) continue;
+        if(de->d_type == DT_DIR) {
+            strcpy(file, de->d_name);
+            sprintf(beforePath, "%s/%s", fromPath, file);
+            recursiveRename(beforePath);
+        }
+        //printf("de rename: %s\n", de->d_name);
+        strcpy(file, de->d_name);
+        strcpy(fileExt, file);
+        sprintf(beforePath, "%s/%s", fromPath, file);
+        //printf("ini file : %s\n", file);
+	
+        char *ext = strrchr(fileExt, '.');
+        char biner[1000], low[1000];
+        encryptBinerProb(file, biner, low);
+        int dec = bstr_to_dec(biner);
+	
+        // int cnt=0;
+        // int dec=0;
+        // for(int i=(strlen(bin)-1);i>=0;i--)
+        // {
+        //     dec=dec+(bin[i]-0x30)*pow((double)2,(double)cnt);
+        //     cnt++;
+        // }
+	
+        if(ext != NULL) {
+            sprintf(afterPath, "%s/%s%s.%d", fromPath, low, ext, dec);
+            //printf("ini afterpath: %s\n", afterPath);
+            rename(beforePath, afterPath);
+        }
+        else if(ext == NULL) {
+            sprintf(afterPath, "%s/%s.%d", fromPath, low, dec);
+            //printf("ini afterpath: %s\n", afterPath);
+            rename(beforePath, afterPath);
+        }
+    }
+    closedir(dp);
+}
+```
+Pada function recursiveRename, untuk melakukan recursive pada direktori-direktori di dalamnya dapat dilakukan dengan while loop selama directory != NULL. Proses tersebut berlangsung secara recursive terus menerus dengan cara memanggil function recursiveRename. dan juga pada fungsi rename ini terdapat fungsi untuk memanggil fungsi ```encryptBinerProb``` yang digunakan untuk mencari beda namanya dan juga mengubah hasil biner tersebut ke dalam sebuah desimal.
+
+### Kendala
+Kendala dalam mengerjakan soal ini, yaitu saya belum dapat menyelesaikan soal pada poin C dan D, dan awalnya kesulitan untuk mencari beda nama dan mengubahnya kedalam bentuk biner karena awalnya berbentuk string atau char.
+
+---------------------------------------------
+
 ### Soal 4
 Pada soal nomor 4, kita perlu mencatat kegiatan pada filesystem pada file SinSeiFS.log pada direktori home user. Log ini dibuat menjadi dua level yaitu, WARNING untuk mencatat syscall rmdir dan unlink dan INFO untuk mencatat syscall sisanya.
 ```
