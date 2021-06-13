@@ -545,6 +545,15 @@ Pada function recursiveRename, untuk melakukan recursive pada direktori-direktor
 ### Kendala
 Kendala dalam mengerjakan soal ini, yaitu saya belum dapat menyelesaikan soal pada poin C dan D, dan awalnya kesulitan untuk mencari beda nama dan mengubahnya kedalam bentuk biner karena awalnya berbentuk string atau char.
 
+### Output
+Output Soal 3 <br/>
+![alt text](https://github.com/migellamp/ss_soal1/blob/main/Screenshot%20from%202021-06-13%2021-04-06.png) <br />
+![alt text](https://github.com/migellamp/ss_soal1/blob/main/Screenshot%20from%202021-06-13%2021-04-39.png) <br />
+SESUDAH <br/>
+![alt text](https://github.com/migellamp/ss_soal1/blob/main/Screenshot%20from%202021-06-13%2021-04-54.png) <br />
+SEBELUM <br/>
+![alt text](https://github.com/migellamp/ss_soal1/blob/main/Screenshot%20from%202021-06-13%2021-05-10.png) <br />
+
 ---------------------------------------------
 
 ### Soal 4
