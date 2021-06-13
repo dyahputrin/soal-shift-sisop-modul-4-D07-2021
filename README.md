@@ -211,13 +211,133 @@ void recursiveRename(char *fromPath, int type) {
 ```
 Pada function recursiveRename, untuk melakukan recursive pada direktori-direktori di dalamnya dapat dilakukan dengan while loop selama directory != NULL. Proses tersebut berlangsung secara recursive terus menerus dengan cara memanggil function recursiveRename.
 
-![alt text](https://github.com/dyahputrin/image/blob/main/41.png) <br />
-![alt text](https://github.com/dyahputrin/image/blob/main/42.png) <br />
-
 ### Kendala
 Pada saat melakukan renaming file, terdapat sedikit kendala pada recursive directory nya.
 
 ---------------------------------------------
+
+### Soal 2
+Pada soal nomor 2 ini kita diminta membuat tambahan enkripsi dan dekripsi dari soal nomor 1 membuat log dan melakukan split size.
+### A
+pada soal A ini kita diminta membuat enkripsi nama file yang berawalan ```RX_``` yang mana apa bila sebuah file memiliki awalana tersebut maka isi file akan dienkripsi dengan metode Atbash chiper dengan tambahan rot13 .
+```
+void encryptrot13(char *string, int type) {
+	printf("encrypt \n");
+	if(!strcmp(string, ".") || !strcmp(string, "..")) return;
+	
+	char *token = strtok(string, ".");
+
+	int end = strlen(token);
+
+        if(type == 1){
+			for(int i = 0; i < end; i++) {
+			        if(string[i] >= 65 && string[i] <= 90) {
+			                string[i] = string[i] + 13;
+			                if(string[i] > 90) {
+			                        string[i] = string[i] - 90 + 65 - 1;
+			                }
+			        } else if(string[i] >= 97 && string[i] <= 122) {
+			                int j = (int)string[i];
+			                j = j + 13;
+			                if(j > 122) {
+			                        j = j - 122 + 97 - 1;
+			                }
+			                string[i] = j;
+			        } else {
+			                string[i] = string[i];
+				}
+			}
+	}
+}
+```
+
+
+
+yang pertama dilakukan dalam fungsi diatas adalah dengan mengecek ekstensi menggunakan ```strtok``` unutk memisahakan agar nama ekstensi dari file tidak terenkripsi, lalu masuk ke dalam koding enkripsi yang dilakukan dalam perulangan ```for```.fungsi diatas dipanggil oleh fungsi recursiverename yang digunakan untuk mengenkripsi seluruh isi dari folder.
+
+### B
+pada soal nomor 2 b kita diminta untuk mengenkripsi sebuah file yang di rename dengan awalan ```RX_``` mejadi file dengan enkripsi atbash cipher ditambah dengan vigenere cipher dengan key "SISOP" dan case Sensitive.
+```
+void vigenereCipher(char* plainText){
+	char *k = "SISOP";
+	int i;
+	char cipher;
+	int cipherValue;
+	int len = strlen(k);
+	
+	//Loop through the length of the plain text string
+	for(i=0; i<strlen(plainText); i++){
+		
+		//if the character is lowercase, where range is [97 -122]
+		if(islower(plainText[i]))
+		{
+			cipherValue = ( (int)plainText[i]-97 + (int)tolower(k[i % len])-97 ) % 26 +97;
+			cipher = (char)cipherValue;
+		}
+		else // Else it's upper case, where letter range is [65 - 90]
+		{
+			cipherValue = ( (int)plainText[i]-65 + (int)toupper(k[i % len])-65 ) % 26 +65;
+			cipher = (char)cipherValue;
+		}
+	}
+	
+	
+}
+```
+fungsi diatas dipanggil oleh fungsi recursiverename yang digunakan untuk mengenkripsi seluruh isi dari folder.
+
+### C
+pada soal c ini kita diminta untuk mengdekripsi file yang telah di enkrisi pada file yang memiliki nama awalan ```RX_``` dekripsi dilakukan ketika sebuah file direname dengan nama file baru tanpa awalan ```RX_``` yang mana koding dekripsi terdapat pada fungsi recursivename yang ada pada nomor 1.
+
+### D
+pada soal D kita diminta untuk membuat log file dari pembuatan directory baru ```mkdir``` atau ketika rename folder yang berada pada mount folder.
+```
+void logFileRXRename(char *path1, char *path2) {
+    FILE *f;
+    f = fopen("RX.log", "a+");
+    fprintf(f, "%s-->%s\n", path1, path2);
+}
+```
+```
+void logFileRXMkdir(char *path) {
+    FILE *f;
+    f = fopen("RX.log", "a+");
+    //format nge-log yang mkdir tidak ditentukan
+    fprintf(f, "mkdir: %s\n", path);
+}
+```
+fungsi diatas akan dipanggil didalam fungsi ```xmp_mkdir``` yang berfungsi sebagai FUSE.
+```
+static int xmp_mkdir(const char *path, mode_t mode)
+{
+    int res;
+    char fpath[1000];
+
+    sprintf(fpath,"%s%s",dirpath,path);
+
+    if(strstr(fpath, "AtoZ_")) {
+        logFileAtozMkdir(fpath);
+    }
+
+    if(strstr(fpath, "RX_")) {
+	printf("create log RX\n");
+        logFileRXMkdir(fpath);
+	recursiveRename(fpath,2);
+    }
+
+    res = mkdir(fpath, mode);
+    if (res == -1)
+        return -errno;
+
+    return 0;
+} 
+```
+
+### Kendala
+pada Soal A pengenkripsian ketika mkdir tidak terbaca. mungkin terjadi kesalahan pada fuse.
+pada Soal B koding vigenere chiper tidak berkerja dengan baik.
+pada Soal D pembuatan log mkdir tidak terbaca. kemungkinan terjadi kesalahan pada fuse.
+
 
 ### Soal 3
 Pada soal nomor e, kita diminta untuk merubah semua nama file menjadi lowercase insensitive dan diberi ekstensi baru berupa nilai desimal dari biner perbedaan namanya. Contohnya jika pada direktori asli nama filenya adalah "FiLe_CoNtoH.txt" maka pada fuse akan menjadi "file_contoh.txt.1321" 1321 berasal dari biner 10100101001.
@@ -447,5 +567,3 @@ void logWarning(char *desc) {
 }
 ```
 Untuk melakukan pencatatan log, kita membuat dua function yaitu ```logInfo``` dan ```logWarning```. Kedua function memiliki cara kerja yang sama dimana kita menggunakan variabel waktu dengan type time_t dan struct wt wt untuk mengambil localtime. Setelah itu, melakukan ```fprintf``` sesuai format yang telah disediakan soal.
-
-![alt text](https://github.com/dyahputrin/image/blob/main/43.png) <br />
